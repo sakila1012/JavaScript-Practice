@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			font-size:13px;
+			font-family:"微软雅黑";
+		}
+		ul li{
+			list-style:none;
+		}
+		a{
+			text-decoration:none;
+		}
+		#outer{
+			margin:0 auto;
+			width:200px;
+		}
+		ul{
+			width:50px;
+			border:1px solid blue;
+			margin-top:5px;
+			text-align:center;
+		}
+		ul li{
+			padding:5px;
+			cursor:pointer;
+			height:20px;
+		}
+		ul li:hover{			
+			background:#d9e1f6;
+		}
+		ul li.closed{
+			border-top:1px solid blue;
+
+		}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<button type="button">输入法</button>
+		<ul id="dis" style="display:none">
+			<li><a href="#">手写</a></li>
+			<li><a href="#">拼音</a></li>
+			<li class="closed"><a href="#">关闭</a></li>
+		</ul>
+	</div>
+	<script>
+		window.onload = function(){
+			var disDom = document.getElementById("dis");
+			var btnDom = document.getElementsByTagName("button")[0];
+			btnDom.addEventListener("click", function(){
+				if(disDom.style.display=="none"){
+					disDom.style.display="block";
+				}else{
+					disDom.style.display="none";
+				}				
+			});
+			var liDom = document.getElementsByClassName("closed")[0];
+			liDom.onclick = function(){				
+				disDom.style.display="none";
+			};
+		}
+	</script>
+</body>
+</html>

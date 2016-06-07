@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			font:12px/1.5 arial;
+			text-align:center;
+		}
+		.container{
+			width:200px;
+			margin:0 auto;
+		}
+		.f-text{
+			width:60px;
+			margin:0 10px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<input type="text" class="f-text">
+		<input type="button" value="是否为两位数">
+	</div>
+	<script>
+		var $ = function(id){
+			return document.getElementsByTagName(id);
+		}
+		var inputDom = $("input");
+		var btnDom = $("input")[1];
+		var value = inputDom.value,i=0;		
+		inputDom[i].onkeyup = function(){
+			this.value = this.value.replace(/[^\d]/,"");
+		}
+		btnDom.onclick = function(){
+			
+			(inputDom[0].value=="") ? 
+			alert("请输入数字！"):
+			alert(/[^\d{2}$]/.test(parseInt(inputDom[0].value))?"是两位数":"这是"+inputDom[0].value.length+"位数.")
+		}
+	</script>
+</body>
+</html>

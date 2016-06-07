@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body,div{
+			margin:0;
+			padding:0;
+		}
+		body{
+			font:14px/1.5 arial;
+		}
+		a{
+			text-decoration:none;
+			color:#fff;
+		}
+		#container{
+			width:400px;
+			height:200px;
+			margin:10px auto;
+			border:1px solid #f60;
+			background:#ffebd7;
+		}
+		#container a{
+			margin:10px 0 0 10px;
+			padding:2px 4px;
+			width:20px;
+			height:10px;
+			color:#fff;
+			background:#f60;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<a href="javascript:;">Get Style</a>
+		<a href="javascript:;">Set Style</a>
+		<a href="javascript:;">Default Style</a>
+	</div>
+	<script>
+		var container = document.getElementById("container");
+		var aDom = document.getElementsByTagName("a");
+		var i=0;
+		function css(obj,attr,value){
+			switch(arguments.length){
+				case 2: if(typeof arguments[1] == "object"){
+					for(var i in attr){
+						obj.style[i] = attr[i];
+					}
+				}else{
+					return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj,null)[attr];
+				}
+				break;
+				case 3:
+					obj.style[attr] = value;
+					break;
+				default:
+					alert("参数错误！")
+			}
+		}
+		aDom[0].onclick = function(){
+			alert("width:"+css(container, "width")+"\nheight:"+css(container, "height")+"\ncolor:"+css(container, "background"))
+		}
+		aDom[1].onclick = function(){
+			css(container, {width:"300px", height:"100px",borderColor:"#0084ff",backgroundColor:"eff8ff"});
+			for(i=0;i<aDom.length;i++){
+				css(aDom[i],"backgroundColor","##0084ff");
+			}
+		}
+		aDom[2].onclick = function(){
+			css(container, {width:"400px", height:"200px",borderColor:"#f60",background:"#fef4eb"});
+			for(i=0;i<aDom.length;i++){
+				css(aDom[i],"background","#f60");
+			}
+		}
+	</script>
+</body>
+</html>

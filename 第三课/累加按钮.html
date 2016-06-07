@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			font:12px/1.5 arial;
+			text-align:center;
+		}
+		div{
+			width:200px;
+			margin:0 auto;
+		}
+	</style>
+</head>
+<body>
+	<div><input type="button" value="0"></div>
+	<script>
+		var btnDom = document.getElementsByTagName("input")[0];
+		btnDom.onclick = function(){
+			btnDom.value++;
+			alert(btnDom.value);
+		} 
+	</script>
+</body>
+</html>

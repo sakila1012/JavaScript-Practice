@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>跟随鼠标移动(大图展示)</title>
+	<style>
+		body,div,ul,li{
+			margin:0;
+			padding:0;
+		}
+		html,body{
+			overflow:hidden;
+		}
+		ul{
+			width:768px;
+			height:172px;
+			margin:10px auto;
+		}
+		ul li{
+			list-style-type:none;
+		}
+		ul li.active{
+			border:1px solid #a10000;
+		}
+		#big{
+			position:absolute;
+			width:400px;
+			height:400px;
+			border:2px solid #ddd;
+			display:none;
+		}
+		li{
+			width:170px;
+			height:170px;
+			display:inline-block;
+			border:1px solid #ddd;
+			margin-right:10px;
+			cursor:pointer;
+		}
+		#big li img{
+			width:170px;
+			height:170px;
+			vertical-align:top;
+		}
+		#big div{
+			position:absolute;
+			top:0;
+			left:0;
+			width:400px;
+			height:400px;
+			opacity:0.5;
+			filter:alpha(opacity=50);
+			background:#fff url(images/loading.gif) 50% 50% no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div id="box">
+		<ul>
+			<li><img src="images/shirt_1.jpg"></li>
+			<li><img src="images/shirt_2.jpg"></li>
+			<li><img src="images/shirt_3.jpg"></li>
+			<li><img src="images/shirt_4.jpg"></li>
+		</ul>
+	</div>
+	<div id="big">
+		<div></div>
+	</div>
+	<script>
+		
+		var oBig = document.getElementById("big");
+		var oLi = document.getElementsByTagName("li");
+		var oLoading = oBig.getElementsByTagName("div")[0];
+		var i = 0;
+		for(i=0;i<oLi.length;i++){
+			oLi[i].index = i;
+			oLi[i].onmouseover = function(){
+				var oImg = document.createElement("img");
+				var img = new Image();
+				img.src = oImg.src = oLi[this.index].getElementsByTagName("img")[0].src.replace(".jpg","_big.jpg");
+				oBig.appendChild(oImg);
+				this.className = "active";
+				oBig.style.display = oLoading.style.display = "block";
+				img.complete ? oLoading.style.display = "none" : (oImg.onload = function(){
+					oLoading.style.display = "none";
+				})
+			};
+			oLi[i].onmousemove = function(event){
+				var event = event || window.event;
+				var iWidth = document.documentElement.offsetWidth - event.clientX;
+				oBig.style.top = event.clientY + 20 +"px";
+				oBig.style.left = (iWidth < oBig.offsetWidth + 10 ? event.clientX - oBig.offsetWidth -10 : event.clientX + 10) + "px";
+			};
+			oLi[i].onmouseout = function(){
+				this.className = "";
+				oBig.style.display = "none";
+				oBig.removeChild(oBig.lastChild);
+			}
+		}
+	</script>
+</body>
+</html>

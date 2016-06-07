@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body{
+			font:12px/1.5 arial;
+			text-align:center;
+		}
+		strong{
+			font-size:24px;
+			font-weight:700;
+		}
+	</style>
+</head>
+<body>
+	<strong>1</strong>
+	<script>
+		var strDom = document.getElementsByTagName("strong")[0];
+		var i=0;
+		setInterval(increaNum, 1000);
+		increaNum();
+		function increaNum(){
+			strDom.innerHTML = ++i;
+		}
+
+	</script>
+</body>
+</html>

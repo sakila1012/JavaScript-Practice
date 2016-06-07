@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body,input,div,ul,li{
+			margin:0;
+			padding:0;
+		}
+		body{
+			font:700 24px/1.5 arial;
+		}
+		ul li{
+			list-style:none;
+		}
+		a{
+			text-decoration:none;
+			color:#fff;
+			outline:none;
+		}
+		#calc{
+			width:300px;		
+			margin:10px auto;
+			background:#333;
+			position:relative;
+		}
+		#calc .inText{
+			border:0;
+			width:290px;
+			height:84px;
+			text-align:right;
+			font:700 50px/84px arial;
+			background:url(images/inputBg.jpg) repeat-x;
+			padding:0 5px;
+		}
+		#calc ul{
+			position:relative;
+			overflow:hidden;
+			zoom:1;
+			background:url(images/bg.jpg);
+			padding:0 0 17px 8px;
+		}
+		#calc ul li{
+			width:63px;
+			height:41px;
+			margin:17px 10px 0 0;
+			float:left;
+		}
+		#calc ul li a{
+			display:block;
+			width:63px;
+			height:41px;
+			text-align:center;
+			line-height:41px;
+			background:url(images/btn.png) no-repeat;
+		}
+		#calc ul li a:hover{
+			background-position:-63px 0;
+		}
+		#calc ul li.btn-1 a{
+			background-position:-63px -41px;
+		}	
+		#calc ul li.btn-1 a:hover{
+			background-position:0 -41px;
+		}	
+		#calc ul li.btn-2{
+			position:absolute;
+			top:174px;
+			right:0;
+			height:99px;
+		}
+		#calc ul li.btn-2 a{
+			height:99px;
+			line-height:99px;
+			background-position:0 -164px;
+		}
+		#calc ul li.btn-2 a:hover{
+			background-position:-63px -164px;
+		}
+		#calc ul li.btn-3{
+			width:136px;
+		}
+		#calc ul li.btn-3 a{
+			width:136px;
+			background-position:0 -82px;
+		}
+		#calc ul li.btn-3 a:hover{			
+			background-position:0 -123px;
+		}			
+		#formula{
+			position:absolute;
+			top:5px;
+			background:none;
+			border:0;
+			font:700 12px/1.5 arial;
+			width:280px;
+			padding:3px 15px 0 5px;
+			text-align:right;
+		}	
+	</style>
+</head>
+<body>
+	<div id="calc">
+		<input type="text" class="inText" maxlength="9" value="0">
+		<ul>
+			<li class="btn-1"><a href="javascript:;">c</a></li>
+			<li class="btn-1"><a href="javascript:;">%</a></li>
+			<li class="btn-1"><a href="javascript:;">÷</a></li>
+			<li class="btn-1"><a href="javascript:;">×</a></li>
+			<li><a href="javascript:;">7</a></li>
+			<li><a href="javascript:;">8</a></li>
+			<li><a href="javascript:;">9</a></li>
+			<li class="btn-1"><a href="javascript:;">-</a></li>
+			<li><a href="javascript:;">4</a></li>
+			<li><a href="javascript:;">5</a></li>
+			<li><a href="javascript:;">6</a></li>
+			<li class="btn-1"><a href="javascript:;">+</a></li>
+			<li><a href="javascript:;">1</a></li>
+			<li><a href="javascript:;">2</a></li>
+			<li><a href="javascript:;">3</a></li>
+			<li class="btn-2"><a href="javascript:;">=</a></li>
+			<li class="btn-3"><a href="javascript:;">0</a></li>
+			<li><a href="javascript:;">.</a></li>
+		</ul>
+		<input type="text" id="formula" readonly="readonly">
+	</div>
+	<script>		
+		var $$ = function(id){
+			return document.getElementById(id);
+		}
+		var calcDom = $$("calc");
+		var aDom = calcDom.getElementsByTagName("a");
+		var inputDom = calcDom.getElementsByTagName("input")[0];
+		var formulaDom = $$("formula");
+		var s = false;
+		var i=0;
+		for(i=0;i<aDom.length;i++){
+			aDom[i].onfocus = function(){
+				this.blur();
+			}
+			aDom[i].onclick = function(){
+				switch(this.innerHTML){
+					case "c":
+						inputDom.value="0";
+						formulaDom.value="";
+						break;
+					case "%":
+						count("%");
+						break;
+					case "÷":
+						count("*");
+						break;
+					case "×":
+						count("*");
+						break;
+					case "-":
+						count("-");
+						break;
+					case "+":
+						count("+");
+						break;
+					case "=":
+						s || (formulaDom.value += inputDom.value);
+						inputDom.value = eval(formulaDom.value.replace(/\%\/\*\-\+/,''));
+						inputDom.value = inputDom.value.substr(0,10).replace("NaN",0)
+						s=true;
+						break;
+					case ".":
+						if(inputDom.value.search(/[\.\%\*\-\+]/)!=-1)
+						break;
+					default:
+						s && (inputDom.value = 0, formulaDom.value = "",s=false);
+						inputDom.value.length<10 && (inputDom.value=(inputDom.value + this.innerHTML).replace(/^[0\%\/\*\-\+](\d)/,"$1"));
+				}
+			}
+		}
+		function count(a){
+			if(s){
+				formulaDom.value = inputDom.value + a;
+				inputDom.value = a;
+				s = false;
+			}else{
+				/[\%\/\*\-\+]$/.test(inputDom.value)||(formulaDom.value += inputDom.value);
+				inputDom.value = a;
+				/[\%\/\*\-\+]$/.test(formulaDom.value) || (formulaDom.value += inputDom.value);
+				formulaDom.value = formulaDom.value.slice(-1) != a ? formulaDom.value.replace(/.$/, a) : formulaDom.value;
+			}
+			
+		}
+	</script>
+</body>
+</html>
